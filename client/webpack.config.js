@@ -1,4 +1,3 @@
-// Import necessary modules and plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
@@ -6,10 +5,9 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = () => {
   return {
-    // Setting the mode to development for more readable output and easier debugging
-    mode: 'development',
+    mode: 'development', // Set mode to development for better readability
 
-    // Entry points for various JavaScript files
+    // Define entry points for various JS files
     entry: {
       main: './src/js/index.js',
       install: './src/js/install.js',
@@ -18,58 +16,54 @@ module.exports = () => {
       header: './src/js/header.js',
     },
 
-    // Output configuration
+    // Configure output options
     output: {
-      filename: '[name].bundle.js', // Naming convention for output files
-      path: path.resolve(__dirname, 'dist'), // Output directory
+      filename: '[name].bundle.js', // Output file naming convention
+      path: path.resolve(__dirname, 'dist'), // Output directory path
     },
 
-    // Plugins used in this configuration
+    // Include plugins for HTML, PWA Manifest, and Service Worker
     plugins: [
-      // Generates an HTML file from a template and injects scripts
-      new HtmlWebpackPlugin({
-        template: './index.html', // Source template file
-        title: 'JATE' // Title of the application
+      new HtmlWebpackPlugin({ // Generates HTML file from template
+        template: './index.html',
+        title: 'JATE'
       }),
-
-      // Configures the service worker using Workbox's InjectManifest plugin
-      new InjectManifest({
-        swSrc: './src-sw.js', // Source service worker file
-        swDest: 'src-sw.js', // Destination for the injected service worker
+      new InjectManifest({ // Service worker configuration
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
       }),
-
-      // Generates a manifest file for the PWA
-      new WebpackPwaManifest({
-        fingerprints: false, // Disables fingerprints in filenames
-        inject: true, // Automatically injects the manifest into the HTML
-        name: 'Just Another Text Editor', // Name of the PWA
-        short_name: 'JATE', // Short name of the PWA
-        description: 'Just Another Text Editor', // Description of the PWA
-        background_color: '#225ca3', // Background color
-        theme_color: '#225ca3', // Theme color
-        start_url: './', // Start URL when launched
-        publicPath: './', // Public path for assets
-        icons: [ // Array of icons for different resolutions
-          {
-            src: path.resolve('src/images/logo.png'),
-            sizes: [96, 128, 192, 256, 384, 512], // Icon sizes
-            destination: path.join('assets', 'icons'), // Destination for icons
-          }
-        ]
+      new WebpackPwaManifest({ // PWA Manifest configuration
+        fingerprints: false,
+        inject: true,
+        name: 'Just Another Text Editor',
+        short_name: 'JATE',
+        description: 'Just Another Text Editor',
+        background_color: '#225ca3',
+        theme_color: '#225ca3',
+        start_url: './',
+        publicPath: './',
+        icons: [{
+          src: path.resolve('src/images/logo.png'),
+          sizes: [96, 128, 192, 256, 384, 512],
+          destination: path.join('assets', 'icons'),
+        }]
       })
     ],
 
-    // Module rules for handling different file types
+    // Define rules for handling different file types
     module: {
       rules: [
-        // Rule for CSS files
         {
-          test: /\.css\$/i, // Regex to match CSS files
-          exclude: /node_modules/, // Excluding node_modules
+          test: /\.css$/i, // Match CSS files
+          use: ['style-loader', 'css-loader'], // Use style-loader and css-loader for CSS files
+        },
+        {
+          test: /\.m?js$/, // Match JS files
+          exclude: /node_modules/,
           use: {
-            loader: 'babel-loader', // Using Babel loader for transpiling
+            loader: 'babel-loader', // Use babel-loader for JS files
             options: {
-              presets: ['@babel/preset-env'], // Preset for latest JavaScript features
+              presets: ['@babel/preset-env'],
               plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
             },
           },
