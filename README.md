@@ -24,7 +24,7 @@ It's a simple text editor.  You can just jot down a single page of text right in
 
 Check out the deployed [render page](https://slem-text-editor.onrender.com//) to check out the text editor!
 
-## ![Text Editor Screenshot](assets/sample.png)
+## ![Text Editor Screenshot](assets/sample1.png)
 
 ## ![Text Editor Screenshot](assets/sample2.png)
 
